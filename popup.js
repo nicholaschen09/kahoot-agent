@@ -25,18 +25,40 @@ class KahootAgentPopup {
     }
 
     bindEvents() {
-        this.startBtn.addEventListener('click', () => this.startAgent());
-        this.stopBtn.addEventListener('click', () => this.stopAgent());
-        this.findBtn.addEventListener('click', () => this.findAnswerNow());
+        this.startBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.startAgent();
+        });
 
-        this.autoClickToggle.addEventListener('click', () => this.toggleAutoClick());
-        this.continuousToggle.addEventListener('click', () => this.toggleContinuous());
+        this.stopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.stopAgent();
+        });
+
+        this.findBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.findAnswerNow();
+        });
+
+        
+
+        this.autoClickToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.toggleAutoClick();
+        });
+
+        this.continuousToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.toggleContinuous();
+        });
 
         this.confidenceSlider.addEventListener('input', (e) => {
             this.confidence = e.target.value;
             this.confidenceValue.textContent = e.target.value + '%';
             this.saveSettings();
         });
+
+                // Side panel stays open automatically - no need for click prevention
     }
 
     async checkKahootPage() {
@@ -138,6 +160,8 @@ class KahootAgentPopup {
         this.saveSettings();
     }
 
+    
+
     updateUI() {
         if (this.isActive) {
             this.startBtn.style.display = 'none';
@@ -160,12 +184,12 @@ class KahootAgentPopup {
         });
     }
 
-    loadSettings() {
+        loadSettings() {
         chrome.storage.local.get(['autoClick', 'continuous', 'confidence'], (result) => {
             this.autoClick = result.autoClick || false;
             this.continuousMode = result.continuous || false;
             this.confidence = result.confidence || 70;
-
+            
             this.autoClickToggle.classList.toggle('active', this.autoClick);
             this.continuousToggle.classList.toggle('active', this.continuousMode);
             this.confidenceSlider.value = this.confidence;

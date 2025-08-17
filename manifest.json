@@ -5,7 +5,9 @@
     "description": "Automated Kahoot question answering assistant",
     "permissions": [
         "activeTab",
-        "scripting"
+        "scripting",
+        "storage",
+        "sidePanel"
     ],
     "host_permissions": [
         "https://kahoot.it/*",
@@ -13,8 +15,13 @@
         "https://play.kahoot.it/*"
     ],
     "action": {
-        "default_popup": "popup.html",
         "default_title": "Kahoot Agent"
+    },
+    "side_panel": {
+        "default_path": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
     },
     "content_scripts": [
         {
