@@ -9,7 +9,7 @@ from kahoot_agent import KahootAgent
 
 def example_single_question():
     """Example: Process a single question manually."""
-    print("📝 Example: Single Question Mode")
+    print(" Example: Single Question Mode")
     print("-" * 40)
     
     # Create agent (no auto-clicking for safety)
@@ -24,18 +24,18 @@ def example_single_question():
         print(f"   {i}...")
         time.sleep(1)
     
-    print("\n🔍 Processing question...")
+    print("\n Processing question...")
     success = agent.process_question()
     
     if success:
-        print("✅ Question processed successfully!")
+        print("[SUCCESS] Question processed successfully!")
     else:
         print("❌ Failed to process question")
 
 
 def example_continuous_monitoring():
     """Example: Continuous monitoring mode."""
-    print("📝 Example: Continuous Monitoring")
+    print(" Example: Continuous Monitoring")
     print("-" * 40)
     
     # Create agent with custom settings
@@ -58,7 +58,7 @@ def example_continuous_monitoring():
 
 def example_high_confidence_auto_click():
     """Example: Auto-click mode with high confidence requirement."""
-    print("📝 Example: Auto-Click Mode (High Confidence)")
+    print(" Example: Auto-Click Mode (High Confidence)")
     print("-" * 40)
     
     print("⚠️ WARNING: This will automatically click answers!")
@@ -93,12 +93,12 @@ def example_high_confidence_auto_click():
 
 def example_debug_mode():
     """Example: Debug mode to see what the agent captures."""
-    print("📝 Example: Debug Mode")
+    print(" Example: Debug Mode")
     print("-" * 40)
     
     agent = KahootAgent(use_easyocr=True, auto_click=False)
     
-    print("🔍 Taking debug screenshots...")
+    print(" Taking debug screenshots...")
     print("Make sure Kahoot is visible on screen")
     
     # Give time to position windows
@@ -119,7 +119,7 @@ def example_debug_mode():
     print(f"   - debug_answers.png (answers area)")
     
     if question and answers:
-        print(f"\n🔍 Searching for answer...")
+        print(f"\n Searching for answer...")
         best_answer, confidence = agent.search_for_answer(question, answers)
         print(f"   Best answer: {best_answer}")
         print(f"   Confidence: {confidence:.2f}")
@@ -127,7 +127,7 @@ def example_debug_mode():
 
 def example_custom_configuration():
     """Example: Custom configuration for specific needs."""
-    print("📝 Example: Custom Configuration")
+    print(" Example: Custom Configuration")
     print("-" * 40)
     
     # Create agent with custom settings
@@ -152,7 +152,7 @@ def example_custom_configuration():
     success = agent.process_question()
     
     if success:
-        print("✅ Custom configuration works!")
+        print("[SUCCESS] Custom configuration works!")
     else:
         print("❌ Custom configuration failed")
 

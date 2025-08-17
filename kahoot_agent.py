@@ -46,32 +46,32 @@ class KahootAgent:
         Returns:
             Tuple of (question, answer_options, button_positions)
         """
-        print("📸 Capturing screen...")
+        print("Capturing screen...")
         
         # Capture question and answer areas
         question_img = self.screen_capture.capture_question_area()
         answers_img = self.screen_capture.capture_answers_area()
         
         if question_img is None or answers_img is None:
-            print("❌ Failed to capture screen areas")
+            print("Failed to capture screen areas")
             return None, [], []
         
         # Save debug images
         cv2.imwrite("debug_question.png", question_img)
         cv2.imwrite("debug_answers.png", answers_img)
         
-        print("🔤 Extracting text...")
+        print("Extracting text...")
         
         # Extract question text
         question = self.ocr_extractor.extract_question(question_img)
         if not question:
-            print("❌ Failed to extract question text")
+            print("Failed to extract question text")
             return None, [], []
         
         # Extract answer options
         answer_options = self.ocr_extractor.extract_answers(answers_img)
         if not answer_options:
-            print("❌ Failed to extract answer options")
+            print("Failed to extract answer options")
             return question, [], []
         
         # Find button positions
@@ -81,9 +81,9 @@ class KahootAgent:
         if not button_positions:
             button_positions = self.auto_clicker.find_color_coded_answers(answers_img)
         
-        print(f"✅ Extracted question: {question}")
-        print(f"✅ Found {len(answer_options)} answer options: {answer_options}")
-        print(f"✅ Found {len(button_positions)} button positions")
+        print(f"Extracted question: {question}")
+        print(f"Found {len(answer_options)} answer options: {answer_options}")
+        print(f"Found {len(button_positions)} button positions")
         
         return question, answer_options, button_positions
     
@@ -98,11 +98,11 @@ class KahootAgent:
         Returns:
             Tuple of (best_answer, confidence)
         """
-        print("🔍 Searching for answer...")
+        print("Searching for answer...")
         
         best_answer, confidence = self.answer_searcher.find_best_answer(question, answer_options)
         
-        print(f"✅ Best answer: '{best_answer}' (confidence: {confidence:.2f})")
+        print(f"Best answer: '{best_answer}' (confidence: {confidence:.2f})")
         
         return best_answer, confidence
     
@@ -127,21 +127,21 @@ class KahootAgent:
             self.last_question = question
             self.question_count += 1
             
-            print(f"\n🎯 Question #{self.question_count}: {question}")
-            print(f"📝 Options: {answer_options}")
+            print(f"\nQuestion #{self.question_count}: {question}")
+            print(f"Options: {answer_options}")
             
             # Search for answer
             best_answer, confidence = self.search_for_answer(question, answer_options)
             
             if not best_answer:
-                print("❌ No answer found")
+                print("No answer found")
                 return False
             
-            print(f"🎯 Recommended answer: {best_answer} (confidence: {confidence:.2f})")
+            print(f"Recommended answer: {best_answer} (confidence: {confidence:.2f})")
             
             # Auto-click if enabled and confidence is high enough
             if self.auto_click and confidence >= self.min_confidence and button_positions:
-                print("🖱️ Auto-clicking answer...")
+                print("Auto-clicking answer...")
                 
                 # Get answers area offset (you might need to adjust this based on your screen setup)
                 answers_area_offset = (0, int(self.screen_capture.sct.monitors[1]["height"] * 0.4))
@@ -151,26 +151,26 @@ class KahootAgent:
                 )
                 
                 if success:
-                    print("✅ Answer clicked successfully!")
+                    print("Answer clicked successfully!")
                 else:
-                    print("❌ Failed to click answer")
+                    print("Failed to click answer")
             
             elif self.auto_click:
-                print(f"⚠️ Confidence too low ({confidence:.2f} < {self.min_confidence}) - not clicking")
+                print(f"WARNING: Confidence too low ({confidence:.2f} < {self.min_confidence}) - not clicking")
             
             return True
             
         except Exception as e:
-            print(f"❌ Error processing question: {e}")
+            print(f"Error processing question: {e}")
             return False
     
     def run_continuous(self):
         """Run the agent continuously, monitoring for new questions."""
-        print("🚀 Starting Kahoot Agent in continuous mode...")
-        print(f"⚙️ Auto-click: {'Enabled' if self.auto_click else 'Disabled'}")
-        print(f"⚙️ Min confidence for auto-click: {self.min_confidence}")
-        print(f"⚙️ Scan interval: {self.scan_interval}s")
-        print("⚠️ Emergency stop: Move mouse to top-left corner\n")
+        print("Starting Kahoot Agent in continuous mode...")
+        print(f"Auto-click: {'Enabled' if self.auto_click else 'Disabled'}")
+        print(f"Min confidence for auto-click: {self.min_confidence}")
+        print(f"Scan interval: {self.scan_interval}s")
+        print("Emergency stop: Move mouse to top-left corner\n")
         
         self.running = True
         
@@ -180,16 +180,16 @@ class KahootAgent:
                 time.sleep(self.scan_interval)
                 
         except KeyboardInterrupt:
-            print("\n🛑 Stopped by user")
+            print("\nStopped by user")
         except Exception as e:
-            print(f"\n❌ Unexpected error: {e}")
+            print(f"\nUnexpected error: {e}")
         finally:
             self.running = False
     
     def run_single(self):
         """Process a single question and exit."""
-        print("🚀 Running Kahoot Agent in single-shot mode...")
-        print("⚠️ Make sure Kahoot is visible on screen\n")
+        print("Running Kahoot Agent in single-shot mode...")
+        print("Make sure Kahoot is visible on screen\n")
         
         # Give user time to position windows
         for i in range(3, 0, -1):
@@ -199,16 +199,16 @@ class KahootAgent:
         success = self.process_question()
         
         if success:
-            print("\n✅ Question processed successfully!")
+            print("\nQuestion processed successfully!")
         else:
-            print("\n❌ Failed to process question")
+            print("\nFailed to process question")
         
         return success
     
     def stop(self):
         """Stop the agent."""
         self.running = False
-        print("🛑 Stopping agent...")
+        print("Stopping agent...")
 
 
 def main():

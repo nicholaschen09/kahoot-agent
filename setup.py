@@ -23,11 +23,11 @@ def check_python_version():
     """Check if Python version is adequate."""
     version = sys.version_info
     if version.major < 3 or (version.major == 3 and version.minor < 8):
-        print("❌ Python 3.8 or higher is required!")
+        print("ERROR: Python 3.8 or higher is required!")
         print(f"   Current version: {version.major}.{version.minor}.{version.micro}")
         return False
     
-    print(f"✅ Python version: {version.major}.{version.minor}.{version.micro}")
+    print(f"Python version: {version.major}.{version.minor}.{version.micro}")
     return True
 
 
@@ -35,23 +35,23 @@ def install_tesseract():
     """Install Tesseract OCR based on the operating system."""
     system = platform.system().lower()
     
-    print(f"🔧 Installing Tesseract OCR for {system}...")
+    print(f"Installing Tesseract OCR for {system}...")
     
     if system == "darwin":  # macOS
         print("   Checking for Homebrew...")
         success, _ = run_command(["which", "brew"])
         if not success:
-            print("❌ Homebrew not found. Please install Homebrew first:")
+            print("ERROR: Homebrew not found. Please install Homebrew first:")
             print("   /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
             return False
         
         print("   Installing tesseract via Homebrew...")
         success, output = run_command(["brew", "install", "tesseract"])
         if success:
-            print("✅ Tesseract installed successfully!")
+            print("Tesseract installed successfully!")
             return True
         else:
-            print(f"❌ Failed to install tesseract: {output}")
+            print(f"Failed to install tesseract: {output}")
             return False
     
     elif system == "linux":
@@ -60,24 +60,24 @@ def install_tesseract():
         if success:
             success, output = run_command(["sudo", "apt", "install", "-y", "tesseract-ocr"])
             if success:
-                print("✅ Tesseract installed successfully!")
+                print("Tesseract installed successfully!")
                 return True
             else:
-                print(f"❌ Failed to install tesseract: {output}")
+                print(f"Failed to install tesseract: {output}")
                 return False
         else:
-            print("❌ Failed to update package list")
+            print("Failed to update package list")
             return False
     
     elif system == "windows":
-        print("⚠️ Windows detected. Please install Tesseract manually:")
+        print("WARNING: Windows detected. Please install Tesseract manually:")
         print("   1. Download from: https://github.com/UB-Mannheim/tesseract/wiki")
         print("   2. Install the executable")
         print("   3. Add Tesseract to your PATH")
         return True
     
     else:
-        print(f"⚠️ Unsupported system: {system}")
+        print(f"WARNING: Unsupported system: {system}")
         print("   Please install Tesseract OCR manually")
         return True
 
@@ -86,21 +86,21 @@ def check_tesseract():
     """Check if Tesseract is installed."""
     success, _ = run_command(["tesseract", "--version"])
     if success:
-        print("✅ Tesseract OCR is installed")
+        print("Tesseract OCR is installed")
         return True
     else:
-        print("⚠️ Tesseract OCR not found")
+        print("WARNING: Tesseract OCR not found")
         return False
 
 
 def install_requirements():
     """Install Python requirements."""
-    print("📦 Installing Python dependencies...")
+    print("Installing Python dependencies...")
     
     # Check if pip is available
     success, _ = run_command([sys.executable, "-m", "pip", "--version"])
     if not success:
-        print("❌ pip not found!")
+        print("ERROR: pip not found!")
         return False
     
     # Install requirements
@@ -109,16 +109,16 @@ def install_requirements():
     ])
     
     if success:
-        print("✅ Python dependencies installed successfully!")
+        print("Python dependencies installed successfully!")
         return True
     else:
-        print(f"❌ Failed to install dependencies: {output}")
+        print(f"Failed to install dependencies: {output}")
         return False
 
 
 def test_installation():
     """Test if the installation works."""
-    print("🧪 Testing installation...")
+    print("Testing installation...")
     
     try:
         # Test imports
@@ -127,31 +127,31 @@ def test_installation():
         import requests
         import pyautogui
         
-        print("✅ Core dependencies imported successfully")
+        print("Core dependencies imported successfully")
         
         # Test OCR libraries
         try:
             import easyocr
-            print("✅ EasyOCR available")
+            print("EasyOCR available")
         except ImportError:
-            print("⚠️ EasyOCR not available")
+            print("WARNING: EasyOCR not available")
         
         try:
             import pytesseract
-            print("✅ pytesseract available")
+            print("pytesseract available")
         except ImportError:
-            print("⚠️ pytesseract not available")
+            print("WARNING: pytesseract not available")
         
         return True
         
     except ImportError as e:
-        print(f"❌ Import error: {e}")
+        print(f"Import error: {e}")
         return False
 
 
 def main():
     """Main setup function."""
-    print("🚀 Kahoot Agent Setup")
+    print("Kahoot Agent Setup")
     print("=" * 40)
     
     # Check Python version
@@ -160,13 +160,13 @@ def main():
     
     # Check current directory
     if not os.path.exists("requirements.txt"):
-        print("❌ requirements.txt not found!")
+        print("ERROR: requirements.txt not found!")
         print("   Make sure you're running this from the kahoot-agent directory")
         sys.exit(1)
     
     # Install Python requirements
     if not install_requirements():
-        print("❌ Failed to install Python dependencies")
+        print("ERROR: Failed to install Python dependencies")
         sys.exit(1)
     
     # Check/install Tesseract
@@ -174,17 +174,17 @@ def main():
         if platform.system().lower() != "windows":
             install_tesseract()
         else:
-            print("⚠️ Please install Tesseract manually on Windows")
+            print("WARNING: Please install Tesseract manually on Windows")
     
     # Test installation
     if test_installation():
-        print("\n🎉 Setup completed successfully!")
+        print("\nSetup completed successfully!")
         print("\nNext steps:")
         print("1. Open Kahoot in your browser")
         print("2. Run: python kahoot_agent.py --mode single")
         print("3. Check the README.md for more usage instructions")
     else:
-        print("\n❌ Setup completed with errors")
+        print("\nSetup completed with errors")
         print("   Some components may not work correctly")
         print("   Check the error messages above")
 
