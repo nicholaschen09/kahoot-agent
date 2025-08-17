@@ -1,0 +1,11 @@
+#history
+.history/
+
+#venv
+venv/
+
+#pycache
+__pycache__/
+
+#logs
+logs/
