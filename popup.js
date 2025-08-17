@@ -6,13 +6,13 @@ class KahootAgentPopup {
         this.autoClick = false;
         this.continuousMode = false;
         this.confidence = 70;
-        
+
         this.initializeElements();
         this.bindEvents();
         this.loadSettings();
         this.checkKahootPage();
     }
-    
+
     initializeElements() {
         this.startBtn = document.getElementById('startAgent');
         this.stopBtn = document.getElementById('stopAgent');
@@ -23,30 +23,30 @@ class KahootAgentPopup {
         this.confidenceSlider = document.getElementById('confidenceSlider');
         this.confidenceValue = document.getElementById('confidenceValue');
     }
-    
+
     bindEvents() {
         this.startBtn.addEventListener('click', () => this.startAgent());
         this.stopBtn.addEventListener('click', () => this.stopAgent());
         this.findBtn.addEventListener('click', () => this.findAnswerNow());
-        
+
         this.autoClickToggle.addEventListener('click', () => this.toggleAutoClick());
         this.continuousToggle.addEventListener('click', () => this.toggleContinuous());
-        
+
         this.confidenceSlider.addEventListener('input', (e) => {
             this.confidence = e.target.value;
             this.confidenceValue.textContent = e.target.value + '%';
             this.saveSettings();
         });
     }
-    
+
     async checkKahootPage() {
         try {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
             const isKahoot = tab.url && (
-                tab.url.includes('kahoot.it') || 
+                tab.url.includes('kahoot.it') ||
                 tab.url.includes('play.kahoot.it')
             );
-            
+
             if (!isKahoot) {
                 this.status.textContent = 'Not on Kahoot page';
                 this.status.className = 'status status-inactive';
@@ -62,11 +62,11 @@ class KahootAgentPopup {
             console.error('Error checking page:', error);
         }
     }
-    
+
     async startAgent() {
         try {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            
+
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: this.injectAgent,
@@ -76,20 +76,20 @@ class KahootAgentPopup {
                     confidence: this.confidence / 100
                 }]
             });
-            
+
             this.isActive = true;
             this.updateUI();
-            
+
         } catch (error) {
             console.error('Error starting agent:', error);
             this.status.textContent = 'Error starting agent';
         }
     }
-    
+
     async stopAgent() {
         try {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            
+
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: () => {
@@ -99,19 +99,19 @@ class KahootAgentPopup {
                     }
                 }
             });
-            
+
             this.isActive = false;
             this.updateUI();
-            
+
         } catch (error) {
             console.error('Error stopping agent:', error);
         }
     }
-    
+
     async findAnswerNow() {
         try {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            
+
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: this.findSingleAnswer,
@@ -120,24 +120,24 @@ class KahootAgentPopup {
                     confidence: this.confidence / 100
                 }]
             });
-            
+
         } catch (error) {
             console.error('Error finding answer:', error);
         }
     }
-    
+
     toggleAutoClick() {
         this.autoClick = !this.autoClick;
         this.autoClickToggle.classList.toggle('active', this.autoClick);
         this.saveSettings();
     }
-    
+
     toggleContinuous() {
         this.continuousMode = !this.continuousMode;
         this.continuousToggle.classList.toggle('active', this.continuousMode);
         this.saveSettings();
     }
-    
+
     updateUI() {
         if (this.isActive) {
             this.startBtn.style.display = 'none';
@@ -151,7 +151,7 @@ class KahootAgentPopup {
             this.status.className = 'status status-inactive';
         }
     }
-    
+
     saveSettings() {
         chrome.storage.local.set({
             autoClick: this.autoClick,
@@ -159,20 +159,20 @@ class KahootAgentPopup {
             confidence: this.confidence
         });
     }
-    
+
     loadSettings() {
         chrome.storage.local.get(['autoClick', 'continuous', 'confidence'], (result) => {
             this.autoClick = result.autoClick || false;
             this.continuousMode = result.continuous || false;
             this.confidence = result.confidence || 70;
-            
+
             this.autoClickToggle.classList.toggle('active', this.autoClick);
             this.continuousToggle.classList.toggle('active', this.continuousMode);
             this.confidenceSlider.value = this.confidence;
             this.confidenceValue.textContent = this.confidence + '%';
         });
     }
-    
+
     // Function to inject into the page
     injectAgent(config) {
         // Import the main agent code
@@ -180,7 +180,7 @@ class KahootAgentPopup {
             const script = document.createElement('script');
             script.src = chrome.runtime.getURL('content.js');
             document.head.appendChild(script);
-            
+
             // Wait for script to load then start
             setTimeout(() => {
                 if (window.KahootAgent) {
@@ -193,7 +193,7 @@ class KahootAgentPopup {
             window.kahootAgent.start();
         }
     }
-    
+
     // Function to find a single answer
     findSingleAnswer(config) {
         if (window.KahootAgent) {
