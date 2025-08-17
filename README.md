@@ -40,9 +40,10 @@ A Chrome extension that automatically finds answers to Kahoot questions using we
    - Go to https://kahoot.it/
    - Enter game PIN and join
 
-2. **Open Extension:**
+2. **Open Side Panel:**
    - Click the Kahoot Agent icon in your toolbar
-   - Or use the keyboard shortcut
+   - Extension opens as a side panel that stays open
+   - No worries about clicking outside - it won't close!
 
 3. **Find Answers:**
    - Click "Find Answer Now" for single questions
@@ -83,6 +84,8 @@ chrome-extension/
 ### Permissions Required
 - `activeTab`: Access to current tab content
 - `scripting`: Execute scripts on Kahoot pages
+- `storage`: Save user preferences
+- `sidePanel`: Open as side panel
 - `kahoot.it/*`: Access to Kahoot domains
 
 ### APIs Used

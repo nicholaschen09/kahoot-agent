@@ -184,7 +184,7 @@ class KahootAgentPopup {
         });
     }
 
-        loadSettings() {
+    loadSettings() {
         chrome.storage.local.get(['autoClick', 'continuous', 'confidence'], (result) => {
             this.autoClick = result.autoClick || false;
             this.continuousMode = result.continuous || false;

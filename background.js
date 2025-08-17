@@ -7,7 +7,7 @@ chrome.action.onClicked.addListener(async (tab) => {
         await chrome.sidePanel.open({ windowId: tab.windowId });
     } catch (error) {
         console.error('Failed to open side panel:', error);
-        
+
         // Fallback: try to set the side panel for this tab
         try {
             await chrome.sidePanel.setOptions({
@@ -26,7 +26,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete' && tab.url) {
         const isKahootPage = tab.url.includes('kahoot.it') || tab.url.includes('play.kahoot.it');
-        
+
         if (isKahootPage) {
             try {
                 await chrome.sidePanel.setOptions({
