@@ -40,7 +40,7 @@ class KahootAgentPopup {
             this.findAnswerNow();
         });
 
-        
+
 
         this.autoClickToggle.addEventListener('click', (e) => {
             e.preventDefault();
@@ -58,7 +58,7 @@ class KahootAgentPopup {
             this.saveSettings();
         });
 
-                // Side panel stays open automatically - no need for click prevention
+        // Side panel stays open automatically - no need for click prevention
     }
 
     async checkKahootPage() {
@@ -160,7 +160,7 @@ class KahootAgentPopup {
         this.saveSettings();
     }
 
-    
+
 
     updateUI() {
         if (this.isActive) {
@@ -189,7 +189,7 @@ class KahootAgentPopup {
             this.autoClick = result.autoClick || false;
             this.continuousMode = result.continuous || false;
             this.confidence = result.confidence || 70;
-            
+
             this.autoClickToggle.classList.toggle('active', this.autoClick);
             this.continuousToggle.classList.toggle('active', this.continuousMode);
             this.confidenceSlider.value = this.confidence;
