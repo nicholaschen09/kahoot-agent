@@ -1,0 +1,12 @@
+opencv-python
+pytesseract
+easyocr
+beautifulsoup4
+requests
+selenium
+pyautogui
+mss
+pillow
+numpy
+webdriver-manager
+googlesearch-python

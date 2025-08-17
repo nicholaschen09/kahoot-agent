@@ -1,0 +1,44 @@
+{
+    "manifest_version": 3,
+    "name": "Kahoot Agent",
+    "version": "1.0",
+    "description": "Automated Kahoot question answering assistant",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://kahoot.it/*",
+        "https://*.kahoot.it/*",
+        "https://play.kahoot.it/*"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Kahoot Agent"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://kahoot.it/*",
+                "https://*.kahoot.it/*",
+                "https://play.kahoot.it/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "answer_searcher.js"
+            ],
+            "matches": [
+                "https://kahoot.it/*",
+                "https://*.kahoot.it/*",
+                "https://play.kahoot.it/*"
+            ]
+        }
+    ]
+}
